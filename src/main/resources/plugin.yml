@@ -1,0 +1,7 @@
+name: CLEco
+main: de.craftlancer.economy.CLEco
+version: ${project.version}
+depend: [CLCore]
+commands:
+  money:
+    usage: /money
