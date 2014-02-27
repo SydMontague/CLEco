@@ -21,6 +21,11 @@
       <version>RELEASE</version>
     </dependency>
     <dependency>
+      <groupId>de.craftlancer</groupId>
+      <artifactId>clcore</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+    <dependency>
       <groupId>com.Acrobat</groupId>
       <artifactId>ChestShop</artifactId>
       <version>RELEASE</version>
