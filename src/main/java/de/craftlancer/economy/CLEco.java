@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import de.craftlancer.core.CLPlugin;
+import de.craftlancer.currencyhandler.CurrencyHandler;
 import de.craftlancer.economy.chestshop.ChestShopListener;
 import de.craftlancer.economy.commands.MoneyCommandHandler;
 
@@ -40,7 +41,7 @@ import de.craftlancer.economy.commands.MoneyCommandHandler;
  * und um 3:10 an alle aktiven Spieler zu gleichen Teilen ausgeschüttet.
  * Dabei werden Zeitgleich alle Geld Itemstacks auf dem Boden zerstört.
  */
-public class CLEco extends JavaPlugin implements CLPlugin
+public class CLEco extends JavaPlugin implements CLPlugin, Economy
 {
     private int server;
     public String MONEY_NAME = ChatColor.GOLD + "Münze";
@@ -79,8 +80,11 @@ public class CLEco extends JavaPlugin implements CLPlugin
         getServer().getPluginManager().registerEvents(new MoneyListener(this), this);
         getServer().getPluginManager().registerEvents(new ChestShopListener(this), this);
         
+        if(getServer().getPluginManager().getPlugin("CurrencyHandler") != null)
+            CurrencyHandler.registerCurrency("money", new CLEcoMoneyHandler(this));
+        
         loadOverflow();
-        new OverflowTask(this).runTaskTimer(this, 300L, 300L);
+        new OverflowTask().runTaskTimer(this, 300L, 300L);
         getCommand("money").setExecutor(new MoneyCommandHandler(this));
     }
     
@@ -96,6 +100,7 @@ public class CLEco extends JavaPlugin implements CLPlugin
         return instance;
     }
     
+    @Override
     public boolean isMoney(ItemStack i)
     {
         return i != null && i.hasItemMeta() && i.getItemMeta().hasDisplayName() && (i.getItemMeta().getDisplayName().equals(MONEY_NAME) || i.getItemMeta().getDisplayName().equals("§6M�nze"));
@@ -142,6 +147,7 @@ public class CLEco extends JavaPlugin implements CLPlugin
         }
     }
     
+    @Override
     public int getBalance(Inventory inventory)
     {
         int value = 0;
@@ -357,11 +363,6 @@ public class CLEco extends JavaPlugin implements CLPlugin
     {
         long run = 0;
         
-        public OverflowTask(CLEco plugin)
-        {
-            
-        }
-        
         @Override
         public void run()
         {
@@ -445,5 +446,11 @@ public class CLEco extends JavaPlugin implements CLPlugin
     public int getServerBalance()
     {
         return server;
+    }
+
+    @Override
+    public String getCurrencyName()
+    {
+        return CURRENCY_NAME;
     }
 }

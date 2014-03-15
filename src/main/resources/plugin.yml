@@ -2,6 +2,7 @@ name: CLEco
 main: de.craftlancer.economy.CLEco
 version: ${project.version}
 depend: [CLCore]
+softdepend: [CurrencyHandler]
 commands:
   money:
     usage: /money
