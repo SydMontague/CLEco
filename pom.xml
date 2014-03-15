@@ -39,7 +39,7 @@
     </dependency>
     <dependency>
       <groupId>de.craftlancer</groupId>
-      <artifactId>CurrencyHandler</artifactId>
+      <artifactId>currencyhandler</artifactId>
       <version>RELEASE</version>
     </dependency>
   </dependencies>
