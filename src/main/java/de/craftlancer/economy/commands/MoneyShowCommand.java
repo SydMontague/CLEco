@@ -15,16 +15,16 @@ public class MoneyShowCommand extends MoneySubCommand
     }
     
     @Override
-    protected void execute(CommandSender sender, Command cmd, String label, String[] args)
+    protected String execute(CommandSender sender, Command cmd, String label, String[] args)
     {
         if (!checkSender(sender))
-            sender.sendMessage("Du hast keine Berechtigung für diesen Befehl!");
-        else if (args.length < 2)
-            sender.sendMessage("Nicht genügend Argumente.");
-        else if (!Bukkit.getServer().getOfflinePlayer(args[1]).isOnline())
-            sender.sendMessage(args[1] + " ist nicht online!");
-        else
-            sender.sendMessage(args[1] + "'s Kontostand: " + ((CLEco) plugin).getBalance(Bukkit.getServer().getOfflinePlayer(args[1]).getPlayer().getInventory()) + " " + getPlugin().CURRENCY_NAME);
+            return "Du hast keine Berechtigung für diesen Befehl!";
+        if (args.length < 2)
+            return "Nicht genügend Argumente.";
+        if (!Bukkit.getServer().getOfflinePlayer(args[1]).isOnline())
+            return args[1] + " ist nicht online!";
+        
+        return args[1] + "'s Kontostand: " + ((CLEco) plugin).getBalance(Bukkit.getServer().getOfflinePlayer(args[1]).getPlayer().getInventory()) + " " + getPlugin().CURRENCY_NAME;
     }
     
     @Override

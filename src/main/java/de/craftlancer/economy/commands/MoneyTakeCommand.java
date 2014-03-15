@@ -17,28 +17,25 @@ public class MoneyTakeCommand extends MoneySubCommand
     }
     
     @Override
-    protected void execute(CommandSender sender, Command cmd, String label, String[] args)
+    protected String execute(CommandSender sender, Command cmd, String label, String[] args)
     {
         if (!checkSender(sender))
-            sender.sendMessage("Du hast keine Berechtigung für diesen Befehl!");
-        else if (args.length < 3)
-            sender.sendMessage("Nicht genügend Argumente.");
-        else if (!Bukkit.getServer().getOfflinePlayer(args[1]).isOnline())
-            sender.sendMessage(args[1] + " ist nicht online!");
-        else if (!Utils.isInt(args[2]))
-            sender.sendMessage(args[2] + " ist keine Zahl!");
-        else
-        {
-            int amount = Integer.parseInt(args[2]);
-            Inventory inv = Bukkit.getServer().getOfflinePlayer(args[1]).getPlayer().getInventory();
-            if (!((CLEco) plugin).hasBalance(inv, amount))
-                sender.sendMessage("Dieser Spieler hat nicht soviel Geld!");
-            else
-            {
-                ((CLEco) plugin).withdrawBalance(inv, amount);
-                sender.sendMessage("Du hast " + args[1] + " " + args[2] + " " + getPlugin().CURRENCY_NAME + " abgezogen.");
-            }
-        }
+            return "Du hast keine Berechtigung für diesen Befehl!";
+        if (args.length < 3)
+            return "Nicht genügend Argumente.";
+        if (!Bukkit.getServer().getOfflinePlayer(args[1]).isOnline())
+            return args[1] + " ist nicht online!";
+        if (!Utils.isInt(args[2]))
+            return args[2] + " ist keine Zahl!";
+        
+        int amount = Integer.parseInt(args[2]);
+        Inventory inv = Bukkit.getServer().getOfflinePlayer(args[1]).getPlayer().getInventory();
+        
+        if (!((CLEco) plugin).hasBalance(inv, amount))
+            return "Dieser Spieler hat nicht soviel Geld!";
+        
+        ((CLEco) plugin).withdrawBalance(inv, amount);
+        return "Du hast " + args[1] + " " + args[2] + " " + getPlugin().CURRENCY_NAME + " abgezogen.";
     }
     
     @Override
