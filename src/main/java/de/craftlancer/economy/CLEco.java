@@ -165,11 +165,13 @@ public class CLEco extends JavaPlugin implements CLPlugin, Economy
         return value;
     }
     
+    @Override
     public boolean hasBalance(Inventory inventory, int balance)
     {
         return getBalance(inventory) >= balance;
     }
     
+    @Override
     public void withdrawBalance(Inventory inventory, int balance)
     {
         if (!hasBalance(inventory, balance))
@@ -292,11 +294,13 @@ public class CLEco extends JavaPlugin implements CLPlugin, Economy
             oMap.put(w, oMap.get(w) + overflow);
     }
     
+    @Override
     public void depositBalance(Player p, int balance)
     {
         depositBalance(p.getInventory(), balance);
     }
     
+    @Override
     public void depositBalance(String p, int balance)
     {
         OfflinePlayer op = getServer().getOfflinePlayer(p);
@@ -313,6 +317,7 @@ public class CLEco extends JavaPlugin implements CLPlugin, Economy
         }
     }
     
+    @Override
     public void depositBalance(Inventory inventory, int balance)
     {
         int block = balance / 81;
@@ -353,6 +358,7 @@ public class CLEco extends JavaPlugin implements CLPlugin, Economy
             oMap.put(w, oMap.get(w) + overflow);
     }
     
+    @Override
     public void payBalance(Inventory sender, Inventory reciever, int balance)
     {
         withdrawBalance(sender, balance);
@@ -383,6 +389,7 @@ public class CLEco extends JavaPlugin implements CLPlugin, Economy
         }
     }
     
+    @Override
     public void addToServer(ItemStack item)
     {
         int balance = 0;
@@ -408,11 +415,13 @@ public class CLEco extends JavaPlugin implements CLPlugin, Economy
         addToServer(balance);
     }
     
+    @Override
     public void addToServer(int balance)
     {
         server += balance;
     }
     
+    @Override
     public void removeFromServer(ItemStack item, int pickedUp)
     {
         int balance = 0;
@@ -438,11 +447,13 @@ public class CLEco extends JavaPlugin implements CLPlugin, Economy
         removeFromServer(balance);
     }
     
+    @Override
     public void removeFromServer(int balance)
     {
         server -= balance;
     }
     
+    @Override
     public int getServerBalance()
     {
         return server;

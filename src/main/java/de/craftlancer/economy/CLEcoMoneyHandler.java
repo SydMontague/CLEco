@@ -90,7 +90,7 @@ public class CLEcoMoneyHandler implements Handler<Object, Integer>
         return obj instanceof Integer;
     }
     
-    private Inventory getInventory(Object obj)
+    private static Inventory getInventory(Object obj)
     {
         if (obj instanceof Inventory)
             return (Inventory) obj;
@@ -100,6 +100,7 @@ public class CLEcoMoneyHandler implements Handler<Object, Integer>
         return null;
     }
     
+    @Override
     public boolean checkInputHolder(Object obj)
     {
         return getInventory(obj) != null;
