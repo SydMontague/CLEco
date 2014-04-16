@@ -5,7 +5,7 @@ import org.bukkit.inventory.InventoryHolder;
 
 import de.craftlancer.currencyhandler.Handler;
 
-public class CLEcoMoneyHandler implements Handler<Object, Integer>
+public class CLEcoMoneyHandler implements Handler
 {
     private Economy economy;
     
@@ -15,47 +15,71 @@ public class CLEcoMoneyHandler implements Handler<Object, Integer>
     }
     
     @Override
-    public boolean hasCurrency(Object holder, Integer amount)
+    public boolean hasCurrency(Object holder, Object amount)
     {
+        if (!checkInputHolder(holder))
+            return false;
+        
+        if (!checkInputObject(amount))
+            return false;
+        
         if (holder == null)
-            return economy.getServerBalance() >= amount;
+            return economy.getServerBalance() >= (Integer) amount;
         
         Inventory inventory = getInventory(holder);
-        return economy.hasBalance(inventory, amount);
+        return economy.hasBalance(inventory, (Integer) amount);
     }
     
     @Override
-    public void withdrawCurrency(Object holder, Integer amount)
+    public void withdrawCurrency(Object holder, Object amount)
     {
+        if (!checkInputHolder(holder))
+            return;
+        
+        if (!checkInputObject(amount))
+            return;
+        
         if (holder == null)
         {
-            economy.removeFromServer(amount);
+            economy.removeFromServer((Integer) amount);
             return;
         }
         
         Inventory inventory = getInventory(holder);
-        economy.withdrawBalance(inventory, amount);
+        economy.withdrawBalance(inventory, (Integer) amount);
     }
     
     @Override
-    public void giveCurrency(Object holder, Integer amount)
+    public void giveCurrency(Object holder, Object amount)
     {
+        if (!checkInputHolder(holder))
+            return;
+        
+        if (!checkInputObject(amount))
+            return;
+        
         if (holder == null)
         {
-            economy.addToServer(amount);
+            economy.addToServer((Integer) amount);
             return;
         }
         
         Inventory inventory = getInventory(holder);
-        economy.depositBalance(inventory, amount);
+        economy.depositBalance(inventory, (Integer) amount);
     }
     
     @Override
-    public void setCurrency(Object holder, Integer amount) throws UnsupportedOperationException
+    public void setCurrency(Object holder, Object amount) throws UnsupportedOperationException
     {
+        if (!checkInputHolder(holder))
+            return;
+        
+        if (!checkInputObject(amount))
+            return;
+        
         if (holder == null)
         {
-            int change = amount - economy.getServerBalance();
+            int change = (Integer) amount - economy.getServerBalance();
             
             if (change < 0)
                 economy.removeFromServer(-change);
@@ -64,7 +88,7 @@ public class CLEcoMoneyHandler implements Handler<Object, Integer>
         }
         
         Inventory inventory = getInventory(holder);
-        int change = amount - economy.getBalance(inventory);
+        int change = (Integer) amount - economy.getBalance(inventory);
         
         if (change < 0)
             economy.withdrawBalance(inventory, -change);
@@ -73,9 +97,12 @@ public class CLEcoMoneyHandler implements Handler<Object, Integer>
     }
     
     @Override
-    public String getFormatedString(Integer value)
+    public String getFormatedString(Object value)
     {
-        return value + " " + getCurrencyName();
+        if (!checkInputObject(value))
+            return "INVALID INPUT OBJECT";
+        
+        return value.toString() + " " + getCurrencyName();
     }
     
     @Override
@@ -103,6 +130,6 @@ public class CLEcoMoneyHandler implements Handler<Object, Integer>
     @Override
     public boolean checkInputHolder(Object obj)
     {
-        return getInventory(obj) != null;
+        return obj == null || getInventory(obj) != null;
     }
 }

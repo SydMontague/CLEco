@@ -58,7 +58,7 @@
     <dependency>
       <groupId>de.craftlancer</groupId>
       <artifactId>currencyhandler</artifactId>
-      <version>RELEASE</version>
+      <version>1.0.0</version>
     </dependency>
   </dependencies>
   <build>
